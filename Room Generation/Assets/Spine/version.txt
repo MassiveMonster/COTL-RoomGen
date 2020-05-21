@@ -1,0 +1,2 @@
+This Spine-Unity runtime works with data exported from Spine Editor version: 3.8.xx and 3.9.xx
+Package version: spine-unity-3.9-2020-04-06-beta.unitypackage

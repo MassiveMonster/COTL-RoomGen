@@ -7,6 +7,8 @@ public class GenerateRoom : MonoBehaviour
 {
     public CompositeCollider2D RoomTransform;
 
+    public int Scale = 2;
+
     public bool North = false;
     public bool East = false;
     public bool South = false;
@@ -113,12 +115,12 @@ public class GenerateRoom : MonoBehaviour
         List<List<int>> DecorationGrid = new List<List<int>>();
         int width = (int)(Mathf.Max(RoomTransform.bounds.size.x, RoomTransform.bounds.size.y));
         int height = width;
-        for (int y = -height; y < height; y++)
+        for (int y = -height; y < height; y+= Scale)
         {
             List<int> Row = new List<int>();
-            for (int x = -width; x < width; x++)
+            for (int x = -width; x < width; x+= Scale)
             {
-                if (RoomTransform.ClosestPoint(new Vector2(x, y)) != new Vector2(x, y))
+                if (RoomTransform.ClosestPoint(new Vector2(x , y - (Scale*0.5f))) != new Vector2(x , y - (Scale * 0.5f)) && RoomTransform.ClosestPoint(new Vector2(x, y + (Scale * 0.5f))) != new Vector2(x, y + (Scale * 0.5f)))
                     Row.Add(1);
                 else
                     Row.Add(0);
@@ -140,6 +142,7 @@ public class GenerateRoom : MonoBehaviour
                         }
                     }
             }
+
 
         //3x3 grids
         int GridSize = 3;
@@ -193,18 +196,17 @@ public class GenerateRoom : MonoBehaviour
                 else if (DecorationGrid[x][y] == 1) DecorationGrid[x][y] = 2;
             }
 
-
         Vector3 Position;
         Vector3 ClosestPosition;
         for (int y = 0; y < DecorationGrid.Count; y++)
             for (int x = 0; x < DecorationGrid.Count; x++)
             {
-                Position = new Vector3(x - width, y - height);
+                Position = new Vector3((x * Scale) - width, (y * Scale) - height);
                 ClosestPosition = RoomTransform.ClosestPoint(Position);
-                if (Vector3.Distance(ClosestPosition, Position) < 5)
+                if (Vector3.Distance(ClosestPosition, Position) < 5 * Scale)
                 {
                     if (DecorationGrid[y][x] == 2)
-                        Instantiate(DecorationPiece, Position, Quaternion.identity, RoomTransform.transform);
+                        Instantiate(DecorationPiece, Position , Quaternion.identity, RoomTransform.transform);
 
                     if (DecorationGrid[y][x] == 3)
                         Instantiate(DecorationPiece2x2, Position, Quaternion.identity, RoomTransform.transform);

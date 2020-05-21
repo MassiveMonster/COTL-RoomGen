@@ -1,0 +1,125 @@
+
+crown.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+effects/CrownFlourish
+  rotate: false
+  xy: 2, 2
+  size: 404, 402
+  orig: 404, 402
+  offset: 0, 0
+  index: -1
+effects/whiteball
+  rotate: false
+  xy: 408, 149
+  size: 111, 111
+  orig: 111, 111
+  offset: 0, 0
+  index: -1
+images/Crown
+  rotate: false
+  xy: 503, 38
+  size: 53, 74
+  orig: 53, 74
+  offset: 0, 0
+  index: -1
+images/CrownEye
+  rotate: true
+  xy: 503, 114
+  size: 33, 16
+  orig: 33, 16
+  offset: 0, 0
+  index: -1
+images/CrownEyeShut
+  rotate: true
+  xy: 626, 228
+  size: 32, 10
+  orig: 32, 10
+  offset: 0, 0
+  index: -1
+images/CrownEyeShut2
+  rotate: false
+  xy: 521, 116
+  size: 30, 19
+  orig: 30, 19
+  offset: 0, 0
+  index: -1
+images/CrownEyeShut3
+  rotate: false
+  xy: 553, 122
+  size: 33, 13
+  orig: 33, 13
+  offset: 0, 0
+  index: -1
+images/CrownEye_GOAT
+  rotate: false
+  xy: 727, 137
+  size: 37, 37
+  orig: 37, 37
+  offset: 0, 0
+  index: -1
+images/CrownEye_SNAKE
+  rotate: true
+  xy: 727, 111
+  size: 24, 23
+  orig: 24, 23
+  offset: 0, 0
+  index: -1
+images/CrownGlow
+  rotate: false
+  xy: 521, 137
+  size: 103, 123
+  orig: 103, 123
+  offset: 0, 0
+  index: -1
+images/CrownMouth
+  rotate: true
+  xy: 601, 85
+  size: 50, 23
+  orig: 50, 23
+  offset: 0, 0
+  index: -1
+images/CrownMouthOpen
+  rotate: true
+  xy: 766, 131
+  size: 43, 35
+  orig: 43, 35
+  offset: 0, 0
+  index: -1
+images/CrownSpikes
+  rotate: false
+  xy: 408, 22
+  size: 93, 125
+  orig: 93, 125
+  offset: 0, 0
+  index: -1
+images/Crown_GOAT
+  rotate: true
+  xy: 626, 106
+  size: 68, 99
+  orig: 68, 99
+  offset: 0, 0
+  index: -1
+images/Crown_SNAKE
+  rotate: false
+  xy: 558, 38
+  size: 41, 82
+  orig: 41, 82
+  offset: 0, 0
+  index: -1
+images/Crown_wings
+  rotate: true
+  xy: 639, 176
+  size: 228, 139
+  orig: 228, 139
+  offset: 0, 0
+  index: -1
+images/Crown_wings2
+  rotate: false
+  xy: 408, 262
+  size: 229, 142
+  orig: 229, 142
+  offset: 0, 0
+  index: -1
