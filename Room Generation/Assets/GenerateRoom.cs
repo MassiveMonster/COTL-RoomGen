@@ -105,10 +105,10 @@ public class GenerateRoom : MonoBehaviour
 
     }
 
-    public GameObject DecorationPiece;
-    public GameObject DecorationPiece2x2;
-    public GameObject DecorationPiece3x3;
-    public GameObject DecorationPiece3x3Tall;
+    public List<GameObject> DecorationPiece;
+    public List<GameObject> DecorationPiece2x2;
+    public List<GameObject> DecorationPiece3x3;
+    public List<GameObject> DecorationPiece3x3Tall;
     [Button("Generate Decorations")]
     void PlaceDecorations()
     {
@@ -206,17 +206,17 @@ public class GenerateRoom : MonoBehaviour
                 if (Vector3.Distance(ClosestPosition, Position) < 5 * Scale)
                 {
                     if (DecorationGrid[y][x] == 2)
-                        Instantiate(DecorationPiece, Position , Quaternion.identity, RoomTransform.transform);
+                        Instantiate(DecorationPiece[RandomSeed.Next(0, DecorationPiece.Count)], Position , Quaternion.identity, RoomTransform.transform);
 
                     if (DecorationGrid[y][x] == 3)
-                        Instantiate(DecorationPiece2x2, Position, Quaternion.identity, RoomTransform.transform);
+                        Instantiate(DecorationPiece2x2[RandomSeed.Next(0, DecorationPiece.Count)], Position, Quaternion.identity, RoomTransform.transform);
 
 
                     if (DecorationGrid[y][x] == 4)
                         if (ClosestPosition.y < Position.y)
-                            Instantiate(DecorationPiece3x3Tall, Position, Quaternion.identity, RoomTransform.transform);
+                            Instantiate(DecorationPiece3x3Tall[RandomSeed.Next(0, DecorationPiece.Count)], Position, Quaternion.identity, RoomTransform.transform);
                         else
-                            Instantiate(DecorationPiece3x3, Position, Quaternion.identity, RoomTransform.transform);
+                            Instantiate(DecorationPiece3x3[RandomSeed.Next(0, DecorationPiece.Count)], Position, Quaternion.identity, RoomTransform.transform);
                 }
                 
             }

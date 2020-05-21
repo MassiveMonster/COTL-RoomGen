@@ -690,10 +690,14 @@ MonoBehaviour:
   - {fileID: 101956882}
   IslandPieces:
   - {fileID: 423153065}
-  DecorationPiece: {fileID: 955017783}
-  DecorationPiece2x2: {fileID: 53095873}
-  DecorationPiece3x3: {fileID: 1920370389}
-  DecorationPiece3x3Tall: {fileID: 251277081}
+  DecorationPiece:
+  - {fileID: 4691450132954952443, guid: 763d99f45760b4dd6a6e9792ae91bb12, type: 3}
+  DecorationPiece2x2:
+  - {fileID: 5533281582119726840, guid: 33e707fe14eaf47229b5ed0d48ce1c9e, type: 3}
+  DecorationPiece3x3:
+  - {fileID: 8770248497777079924, guid: 91c73fc6412524cfe97ab9bdf46fa1c1, type: 3}
+  DecorationPiece3x3Tall:
+  - {fileID: 4278259890843606798, guid: 019cf5c9212a0434a9d6319bfc065e56, type: 3}
 --- !u!1 &87430182
 GameObject:
   m_ObjectHideFlags: 0
@@ -2723,6 +2727,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420030}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2738,6 +2743,30 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
+--- !u!114 &519420030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 883587ac7053542c39317a4d5a2a605f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 30797394}
+  targets:
+  - {fileID: 30797390}
+  targetPosition: {x: 0, y: 0, z: 0}
+  targetDistance: 10
+  distance: 10
+  MaxDistance: 11
+  angle: -45
+  TargetOffset: {x: 0, y: 0, z: 0}
+  IN_CONVERSATION: 0
+  Look: {x: 0, y: 0, z: 0}
+  DisablePlayerLook: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
