@@ -105,10 +105,51 @@ public class GenerateRoom : MonoBehaviour
 
     }
 
-    public List<GameObject> DecorationPiece;
-    public List<GameObject> DecorationPiece2x2;
-    public List<GameObject> DecorationPiece3x3;
-    public List<GameObject> DecorationPiece3x3Tall;
+    [System.Serializable]
+    public class ListOfDecorations
+    {
+        public List<DecorationAndProbability> DecorationAndProabilies;
+        int[] Weights;
+        int Index;
+        public GameObject GetRandomGameObject()
+        {
+            Weights = new int[DecorationAndProabilies.Count];
+            int i = -1;
+            while (++i < DecorationAndProabilies.Count)
+                Weights[i] = DecorationAndProabilies[i].Probability;
+            UnityEngine.Debug.Log(Weights.Length);
+
+            Index = Utils.GetRandomWeightedIndex(Weights);
+            UnityEngine.Debug.Log(Weights.Length);
+
+            return DecorationAndProabilies[Index].gameObject;
+        }
+    }
+
+    [System.Serializable]
+    public class DecorationAndProbability
+    {
+        [Range(0,100)]
+        public int Probability = 50;
+        public GameObject gameObject;
+    }
+
+    [Title("1x1 Decoration Pieces")]
+    [HideLabel]
+    public ListOfDecorations DecorationPiece = new ListOfDecorations();
+
+    [Title("2x2 Decoration Pieces")]
+    [HideLabel]
+    public ListOfDecorations DecorationPiece2x2 = new ListOfDecorations();
+
+    [Title("3x3 Decoration Pieces")]
+    [HideLabel]
+    public ListOfDecorations DecorationPiece3x3 = new ListOfDecorations();
+
+    [Title("3x3 Decoration Pieces - Tall", "Tall pieces for the back of the level")]
+    [HideLabel]
+    public ListOfDecorations DecorationPiece3x3Tall = new ListOfDecorations();
+
     [Button("Generate Decorations")]
     void PlaceDecorations()
     {
@@ -206,17 +247,16 @@ public class GenerateRoom : MonoBehaviour
                 if (Vector3.Distance(ClosestPosition, Position) < 5 * Scale)
                 {
                     if (DecorationGrid[y][x] == 2)
-                        Instantiate(DecorationPiece[RandomSeed.Next(0, DecorationPiece.Count)], Position , Quaternion.identity, RoomTransform.transform);
+                        Instantiate(DecorationPiece.GetRandomGameObject(), Position , Quaternion.identity, RoomTransform.transform);
 
                     if (DecorationGrid[y][x] == 3)
-                        Instantiate(DecorationPiece2x2[RandomSeed.Next(0, DecorationPiece.Count)], Position, Quaternion.identity, RoomTransform.transform);
-
+                        Instantiate(DecorationPiece2x2.GetRandomGameObject(), Position, Quaternion.identity, RoomTransform.transform);
 
                     if (DecorationGrid[y][x] == 4)
                         if (ClosestPosition.y < Position.y)
-                            Instantiate(DecorationPiece3x3Tall[RandomSeed.Next(0, DecorationPiece.Count)], Position, Quaternion.identity, RoomTransform.transform);
+                            Instantiate(DecorationPiece3x3.GetRandomGameObject(), Position, Quaternion.identity, RoomTransform.transform);
                         else
-                            Instantiate(DecorationPiece3x3[RandomSeed.Next(0, DecorationPiece.Count)], Position, Quaternion.identity, RoomTransform.transform);
+                            Instantiate(DecorationPiece3x3Tall.GetRandomGameObject(), Position, Quaternion.identity, RoomTransform.transform);
                 }
                 
             }
