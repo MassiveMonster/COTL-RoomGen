@@ -14,7 +14,6 @@ public class GenerateRoom : MonoBehaviour
     public bool South = false;
     public bool West = false;
 
-    public int AngleVariation = 180;
     public int Seed = 0;
     System.Random RandomSeed;
 
@@ -111,16 +110,14 @@ public class GenerateRoom : MonoBehaviour
         public List<DecorationAndProbability> DecorationAndProabilies;
         int[] Weights;
         int Index;
-        public GameObject GetRandomGameObject()
+        public GameObject GetRandomGameObject(double RandomSeed)
         {
             Weights = new int[DecorationAndProabilies.Count];
             int i = -1;
             while (++i < DecorationAndProabilies.Count)
                 Weights[i] = DecorationAndProabilies[i].Probability;
-            UnityEngine.Debug.Log(Weights.Length);
 
-            Index = Utils.GetRandomWeightedIndex(Weights);
-            UnityEngine.Debug.Log(Weights.Length);
+            Index = GetRandomWeightedIndex(Weights, RandomSeed);
 
             return DecorationAndProabilies[Index].gameObject;
         }
@@ -132,6 +129,30 @@ public class GenerateRoom : MonoBehaviour
         [Range(0,100)]
         public int Probability = 50;
         public GameObject gameObject;
+    }
+
+    public static int GetRandomWeightedIndex(int[] weights, double Random)
+    {
+        if (weights == null || weights.Length == 0) return -1;
+
+        int total = 0;
+        int i;
+        for (i = 0; i < weights.Length; i++)
+        {
+            if (weights[i] >= 0) total += weights[i];
+        }
+    
+        float s = 0f;
+
+        for (i = 0; i < weights.Length; i++)
+        {
+            if (weights[i] <= 0f) continue;
+
+            s += (float)weights[i] / total;
+            if (s >= Random) return i;
+        }
+
+        return -1;
     }
 
     [Title("1x1 Decoration Pieces")]
@@ -247,16 +268,16 @@ public class GenerateRoom : MonoBehaviour
                 if (Vector3.Distance(ClosestPosition, Position) < 5 * Scale)
                 {
                     if (DecorationGrid[y][x] == 2)
-                        Instantiate(DecorationPiece.GetRandomGameObject(), Position , Quaternion.identity, RoomTransform.transform);
+                        Instantiate(DecorationPiece.GetRandomGameObject(RandomSeed.NextDouble()), Position , Quaternion.identity, RoomTransform.transform);
 
                     if (DecorationGrid[y][x] == 3)
-                        Instantiate(DecorationPiece2x2.GetRandomGameObject(), Position, Quaternion.identity, RoomTransform.transform);
+                        Instantiate(DecorationPiece2x2.GetRandomGameObject(RandomSeed.NextDouble()), Position, Quaternion.identity, RoomTransform.transform);
 
                     if (DecorationGrid[y][x] == 4)
-                        if (ClosestPosition.y < Position.y)
-                            Instantiate(DecorationPiece3x3.GetRandomGameObject(), Position, Quaternion.identity, RoomTransform.transform);
+                        if (ClosestPosition.y > Position.y)
+                            Instantiate(DecorationPiece3x3.GetRandomGameObject(RandomSeed.NextDouble()), Position, Quaternion.identity, RoomTransform.transform);
                         else
-                            Instantiate(DecorationPiece3x3Tall.GetRandomGameObject(), Position, Quaternion.identity, RoomTransform.transform);
+                            Instantiate(DecorationPiece3x3Tall.GetRandomGameObject(RandomSeed.NextDouble()), Position, Quaternion.identity, RoomTransform.transform);
                 }
                 
             }
