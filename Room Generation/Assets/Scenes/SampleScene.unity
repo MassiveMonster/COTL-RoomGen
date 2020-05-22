@@ -821,7 +821,6 @@ MonoBehaviour:
   East: 0
   South: 1
   West: 1
-  AngleVariation: 90
   Seed: 365568159
   NorthIsland: {fileID: 916890277}
   EastIsland: {fileID: 975880051}
@@ -3020,7 +3019,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 0.07450981, g: 0, b: 0.12941177, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
