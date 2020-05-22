@@ -69,12 +69,18 @@ SpriteAtlas:
     - {fileID: 2800000, guid: a7b437f8847fb8d49b09dd721fb99507, type: 3}
     - {fileID: 2800000, guid: 567db73a9090a8a47883a6c92701b5eb, type: 3}
     - {fileID: 2800000, guid: 0ce741e2220e7d84fa6f433dc6230f58, type: 3}
-    totalSpriteSurfaceArea: 8019248
+    - {fileID: 2800000, guid: 5d213c2255fc99e47a0b8ad1caac0237, type: 3}
+    totalSpriteSurfaceArea: 8227138
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: e15418807c024420bb1d906258cc344b, type: 3}
   - {fileID: 21300000, guid: ed60b441c1f47b1449ee107c0ec21694, type: 3}
+  - {fileID: -4173635125784764590, guid: 5d213c2255fc99e47a0b8ad1caac0237, type: 3}
+  - {fileID: 7106103025142150285, guid: 5d213c2255fc99e47a0b8ad1caac0237, type: 3}
+  - {fileID: 1059591113374320593, guid: 5d213c2255fc99e47a0b8ad1caac0237, type: 3}
+  - {fileID: -4012795657166842944, guid: 5d213c2255fc99e47a0b8ad1caac0237, type: 3}
+  - {fileID: -5255049172023157790, guid: 5d213c2255fc99e47a0b8ad1caac0237, type: 3}
   - {fileID: 21300000, guid: 3649ac52567e5a840904cb28ea2071d2, type: 3}
   - {fileID: 21300000, guid: 0ce741e2220e7d84fa6f433dc6230f58, type: 3}
   - {fileID: 21300000, guid: fd64d25373aa44a51ad7d8efc04c794b, type: 3}
@@ -105,6 +111,11 @@ SpriteAtlas:
   m_PackedSpriteNamesToIndex:
   - Fence
   - Candle_0
+  - GrassTuftDark_1
+  - GrassTuftDark_0
+  - GrassTuftDark_3
+  - GrassTuftDark_2
+  - GrassTuftDark_4
   - FlagPole_1_Dark
   - ShrubCircle
   - Wicker_Hoop_Symbol_1
