@@ -53,6 +53,14 @@ public class GenerateRoom : MonoBehaviour
         }
     }
 
+    bool Testing = false;
+    public void GenerateRandomSeedTest()
+    {
+        Testing = true;
+        GenerateRandomSeed();
+        Testing = false;
+    }
+
     [Button("Generate Random Seed")]
     void GenerateRandomSeed()
     {
@@ -61,13 +69,25 @@ public class GenerateRoom : MonoBehaviour
         Generate();
     }
 
-  
+    List<RoomPath> Encounters;
+    public class RoomPath
+    {
+        public IslandConnector.Direction Direction;
+        public int Encounters;
+        public bool Door;
+        public RoomPath(IslandConnector.Direction Direction, bool Door)
+        {
+            this.Direction = Direction;
+            this.Door = Door;
+        }
+    }
+
     Stopwatch stopwatch = new Stopwatch();
     float PrevTime;
     [Button("GENERATE!", ButtonSizes.Gigantic)]
     void Generate()
     {
-        //ClearPrefabs();
+        ClearPrefabs();
         Pieces = new List<IslandPiece>();
 
         RandomSeed = new System.Random(Seed);
@@ -77,14 +97,22 @@ public class GenerateRoom : MonoBehaviour
 
         CollateLists();
 
-        if (North)
-            GeneratePath(IslandConnector.Direction.North);
-        if (East)
-            GeneratePath(IslandConnector.Direction.East);
-        if (South)
-            GeneratePath(IslandConnector.Direction.South);
-        if (West)
-            GeneratePath(IslandConnector.Direction.West);
+        int TotalEncounters = RandomSeed.Next(2, 7);
+        Encounters = new List<RoomPath>();
+        if (North) Encounters.Add(new RoomPath(IslandConnector.Direction.North, true));
+        if (East) Encounters.Add(new RoomPath(IslandConnector.Direction.East, true));
+        if (South) Encounters.Add(new RoomPath(IslandConnector.Direction.South, true));
+        if (West) Encounters.Add(new RoomPath(IslandConnector.Direction.West, true));
+
+        if (Encounters.Count <= 2 && RandomSeed.NextDouble() < 0.5f)
+            Encounters.Add(new RoomPath(PathGetUnusedDirection(), false));
+
+
+        while (--TotalEncounters > 0)
+            ++Encounters[RandomSeed.Next(0, Encounters.Count)].Encounters;
+
+        foreach (RoomPath Path in Encounters)
+            GeneratePath(Path);
 
         CompositeColliders();
 
@@ -99,6 +127,20 @@ public class GenerateRoom : MonoBehaviour
 
         RoomTransform.geometryType = CompositeCollider2D.GeometryType.Outlines;
         RoomTransform.GenerateGeometry();
+
+        if (Testing)
+        {
+            RoomTransform.enabled = false;
+            Physics2D.SyncTransforms();
+        }
+    }
+
+    IslandConnector.Direction PathGetUnusedDirection()
+    {
+        List<IslandConnector.Direction> UnusedDirections = new List<IslandConnector.Direction> { IslandConnector.Direction.North, IslandConnector.Direction.East, IslandConnector.Direction.South, IslandConnector.Direction.West };
+        foreach (RoomPath r in Encounters)
+            UnusedDirections.Remove(r.Direction);
+        return UnusedDirections[RandomSeed.Next(0, UnusedDirections.Count)];
     }
 
     void CompositeColliders()
@@ -259,7 +301,6 @@ public class GenerateRoom : MonoBehaviour
                                 DecorationGrid[x + i][y + j] = 999;// this will be part of the 4x4 so don't place anything
                         }
                 }
-
             }
 
         //2x2 grids
@@ -325,7 +366,7 @@ public class GenerateRoom : MonoBehaviour
     IslandConnector Connector;
     IslandPiece RandomPiece;
     List<Collider2D> Collisions;
-    void GeneratePath(IslandConnector.Direction Direction)
+    void GeneratePath(RoomPath Path)
     {
         //1) Set start piece as starting location ----------------------------------------------------------------------------------------------------------------||
         CurrentPiece = StartPiece;
@@ -337,7 +378,7 @@ public class GenerateRoom : MonoBehaviour
             //pick a random one as my start piece
             List<IslandPiece> RandomCurrentPiece = new List<IslandPiece>();
             foreach (IslandPiece i in Pieces)
-                if (i.GetConnectorsDirection(Direction, false).Count > 0)
+                if (i.GetConnectorsDirection(Path.Direction, false).Count > 0)
                     RandomCurrentPiece.Add(i);
             CurrentPiece = RandomCurrentPiece[RandomSeed.Next(0, RandomCurrentPiece.Count)];
         }
@@ -349,7 +390,7 @@ public class GenerateRoom : MonoBehaviour
         while (--Steps >= 0)
         {
             //4) Get the current (last placed) island's connection for this direction. Accept connections in a different direction if necessary. -----------------||
-            Connectors = CurrentPiece.GetConnectorsDirection(Direction, true);
+            Connectors = CurrentPiece.GetConnectorsDirection(Path.Direction, true);
 
             if (Connectors == null || Connectors.Count <= 0) return;// there are no connections so end function.
 
@@ -361,9 +402,13 @@ public class GenerateRoom : MonoBehaviour
             //6) If this is the final step, check to see if you can place a door. If not, continue to place islands ----------------------------------------------||
             if (Steps == 0)
             {
-                if (Connector.MyDirection == Direction)
+                if (Connector.MyDirection == Path.Direction)
                 {
-                    CurrentPiece = Instantiate(GetDirectionDoor(Direction), Vector3.zero, Quaternion.identity, RoomTransform.transform);
+                    if (Path.Door)
+                        CurrentPiece = Instantiate(GetDirectionDoor(Path.Direction), Vector3.zero, Quaternion.identity, RoomTransform.transform);
+                    else
+                        CurrentPiece = Instantiate(StartPieces[RandomSeed.Next(0, StartPieces.Count)], Vector3.zero, Quaternion.identity, RoomTransform.transform);
+
                     PositionIsland();
                     Pieces.Add(CurrentPiece);
                 }
