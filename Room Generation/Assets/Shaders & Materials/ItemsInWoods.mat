@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ItemsInWoods
-  m_Shader: {fileID: 4800000, guid: 41cc71506f427084092f1f8f23febce3, type: 3}
+  m_Shader: {fileID: 4800000, guid: 9b53b5b508be4476dba8bd83f37b1764, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1

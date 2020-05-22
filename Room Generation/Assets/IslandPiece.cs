@@ -9,6 +9,15 @@ public class IslandPiece : MonoBehaviour
    public List<IslandConnector> EastConnectors = new List<IslandConnector>();
    public List<IslandConnector> SouthConnectors = new List<IslandConnector>();
    public List<IslandConnector> WestConnectors = new List<IslandConnector>();
+   public Collider2D Collider;
+
+    private void Start()
+    {
+        Collider = GetComponent<Collider2D>();
+        if (Collider == null)
+            Collider = GetComponentInChildren<Collider2D>();
+    }
+
     [Button("Get Connectors")]
    void GetConnectors()
     {
@@ -78,7 +87,7 @@ public class IslandPiece : MonoBehaviour
         return null;
     }
 
-    public void ActivateConnector(IslandConnector islandConnector)
+    public void MarkConnectorAsUsed(IslandConnector islandConnector)
     {
         islandConnector.Active = true;
         NorthConnectors.Remove(islandConnector);
