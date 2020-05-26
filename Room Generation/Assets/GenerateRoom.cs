@@ -7,7 +7,6 @@ using UnityEngine.U2D;
 public class GenerateRoom : MonoBehaviour
 {
     public SpriteShape SpriteShape;
-    public SpriteShapeController spriteShapeController;
 
     public CompositeCollider2D RoomTransform;
 
@@ -121,11 +120,11 @@ public class GenerateRoom : MonoBehaviour
 
         PlaceDecorations();
 
-        PlaceNoiseDecorations();
-
         SpawnDecorations();
 
         CreateSpriteShape();
+
+        DisableIslands();
 
         RoomTransform.geometryType = CompositeCollider2D.GeometryType.Outlines;
         RoomTransform.GenerateGeometry();
@@ -171,92 +170,38 @@ public class GenerateRoom : MonoBehaviour
             i.Collider.usedByComposite = true;
     }
 
+    void DisableIslands()
+    {
+        foreach (IslandPiece i in Pieces)
+            i.gameObject.SetActive(false);
+    }
+
     [Button("Create SpriteShape")]
     void CreateSpriteShape()
     {
-        spriteShapeController.spriteShape = SpriteShape;
-        spriteShapeController.spline.Clear();
-
-        Vector2[] points = new Vector2[RoomTransform.GetPathPointCount(0)];
-        RoomTransform.GetPath(0, points);
-        int p = 0;
-        spriteShapeController.spline.InsertPointAt(0, points[0]);
-        while (++p < points.Length)
+        int i = -1;
+        while (++i < RoomTransform.pathCount)
         {
-            if ( Vector2.Distance(RoomTransform.transform.TransformPoint(points[p]), RoomTransform.transform.TransformPoint(points[p - 1])) > 0.1f)
-                spriteShapeController.spline.InsertPointAt(spriteShapeController.spline.GetPointCount() - 1, RoomTransform.transform.TransformPoint( points[p] ));
+            GameObject g = new GameObject();
+            g.transform.position = Vector3.zero;
+            g.transform.parent = transform;
+            g.name = "Sprite shape " + i;
+
+            SpriteShapeController s = g.AddComponent<SpriteShapeController>();
+            s.spriteShape = SpriteShape;
+            s.spline.Clear();
+            s.splineDetail = 3;
+
+            Vector2[] points = new Vector2[RoomTransform.GetPathPointCount(i)];
+            RoomTransform.GetPath(i, points);
+            int p = 0;
+            s.spline.InsertPointAt(0, points[0]);
+            while (++p < points.Length)
+            {
+                if (Vector2.Distance(RoomTransform.transform.TransformPoint(points[p]), RoomTransform.transform.TransformPoint(points[p - 1])) > 0.1f)
+                    s.spline.InsertPointAt(s.spline.GetPointCount() - 1, RoomTransform.transform.TransformPoint(points[p]));
+            }
         }
-    }
-
-    [Button("Combine SpriteShapes")]
-    void CombineSpriteShapes()
-    {
-        List<SpriteShapeController> spriteShapeControllers = new List< SpriteShapeController > (GetComponentsInChildren<SpriteShapeController>());
-        SpriteShapeController StartPieceSSController = StartPiece.GetComponentInChildren<SpriteShapeController>();
-        spriteShapeControllers.Remove(StartPieceSSController);
-
-        while (spriteShapeControllers.Count > 0)
-        {
-
-            //find closest to StartPieceSpriteShapeController
-            SpriteShapeController Closest = null;
-            float Distance = float.MaxValue;
-            foreach (SpriteShapeController s in spriteShapeControllers)
-            {
-                //todo search through points rather that sprite shapes
-                float CheckDist = Vector2.Distance(s.transform.position, StartPieceSSController.transform.position);
-                if (CheckDist < Distance)
-                {
-                    Closest = s;
-                    Distance = CheckDist;
-                }
-            }
-
-            int StartClosestIndex= 0;
-            int ClosestIndex = 0;
-            Distance = float.MaxValue;
-
-            int i = -1;
-            while (++i < StartPieceSSController.spline.GetPointCount())
-            {
-                int j = -1;
-                while (++j < Closest.spline.GetPointCount())
-                {
-                    UnityEngine.Debug.Log(StartPieceSSController.transform.TransformPoint(StartPieceSSController.spline.GetPosition(i)) + "  " +  Closest.transform.TransformPoint(Closest.spline.GetPosition(j)));
-                    float CheckDist = Vector2.Distance(StartPieceSSController.transform.TransformPoint(StartPieceSSController.spline.GetPosition(i)), Closest.transform.TransformPoint(Closest.spline.GetPosition(j)));
-                    if (CheckDist < Distance)
-                    {
-                        Distance = CheckDist;
-                        StartClosestIndex = i;
-                        ClosestIndex = j;
-                    }
-                }
-            }
-
-            while (ClosestIndex < Closest.spline.GetPointCount() )
-            {
-                StartPieceSSController.spline.InsertPointAt(StartClosestIndex, Closest.transform.TransformPoint(Closest.spline.GetPosition(ClosestIndex)));
-
-                ++ClosestIndex;
-            }
-
-            int k = 0;
-            while (k < ClosestIndex - 1)
-            {
-                StartPieceSSController.spline.InsertPointAt(StartClosestIndex, Closest.transform.TransformPoint(Closest.spline.GetPosition(k)));
-                ++k;
-            }
-
-            UnityEngine.Debug.Log("AA " + spriteShapeControllers.Count);
-            Closest.enabled = false;
-            spriteShapeControllers.Remove(Closest);
-        }
-
-        //find 2 closest points of ClosestSpriteShapeController and StartPieceSpriteShapeController
-        //Insert(ClosestSSController's point to
-
-
-
     }
 
     void CollateLists()
@@ -318,7 +263,8 @@ public class GenerateRoom : MonoBehaviour
         public List<DecorationAndProbability> DecorationAndProabilies;
         int[] Weights;
         int Index;
-        public GameObject GetRandomGameObject(double RandomSeed)
+
+        public DecorationAndProbability GetRandomGameObject(double RandomSeed)
         {
             Weights = new int[DecorationAndProabilies.Count];
             int i = -1;
@@ -327,7 +273,7 @@ public class GenerateRoom : MonoBehaviour
 
             Index = GetRandomWeightedIndex(Weights, RandomSeed);
 
-            return DecorationAndProabilies[Index].gameObject;
+            return DecorationAndProabilies[Index];//.gameObject;
         }
     }
 
@@ -337,6 +283,11 @@ public class GenerateRoom : MonoBehaviour
         [Range(0,100)]
         public int Probability = 50;
         public GameObject gameObject;
+        public Vector2 RandomOffset = new Vector2();
+        public Vector3 GetRandomOffset()
+        {
+            return new Vector3(UnityEngine.Random.Range(-RandomOffset.x, RandomOffset.x), UnityEngine.Random.Range(-RandomOffset.y, RandomOffset.y), 0);
+        }
     }
 
     public static int GetRandomWeightedIndex(int[] weights, double Random)
@@ -378,6 +329,14 @@ public class GenerateRoom : MonoBehaviour
     [Title("3x3 Decoration Pieces - Tall", "Tall pieces for the back of the level")]
     [HideLabel]
     public ListOfDecorations DecorationPiece3x3Tall = new ListOfDecorations();
+
+    [Title("Perlin Noise Decorations - Off The Path", "Decoration to appear with the other decorations")]
+    [HideLabel]
+    public ListOfDecorations DecorationPerlinNoiseOffPath = new ListOfDecorations();
+
+    [Title("Perlin Noise Decorations - On The Path", "Decoration to appear in the game play area")]
+    [HideLabel]
+    public ListOfDecorations DecorationPerlinNoiseOnPath = new ListOfDecorations();
 
     List<List<int>> DecorationGrid;
     int DecorationGridWidth;
@@ -474,42 +433,66 @@ public class GenerateRoom : MonoBehaviour
 
     }
 
-    void PlaceNoiseDecorations()
+    DecorationAndProbability d;
+    GameObject PerlinNoiseDecoration;
+    Vector3 PerlinScale;
+    public float NoiseScale = 10;
+    public float NoiseThreshold = 0.65f;
+    void PlaceNoiseDecorations(int x, int y, Vector3 Position)
     {
-        /*
-         * float NoiseScale = 10f;
-                    float Noise = Mathf.PerlinNoise(((float)x / (float)DecorationGridWidth) * NoiseScale, ((float)y / (float)DecorationGridHeight) * NoiseScale);
-                    UnityEngine.Debug.Log(Noise);
-                    if (Noise > 0.5f)
-                        DecorationGrid[y][x] = 0;
+        float Noise = Mathf.PerlinNoise(((float)x / (float)DecorationGridWidth) * NoiseScale, ((float)y / (float)DecorationGridHeight) * NoiseScale);
+        if (Noise >= NoiseThreshold)
+        {
+            if (DecorationGrid[y][x] == 0)
+                d = DecorationPerlinNoiseOnPath.GetRandomGameObject(RandomSeed.NextDouble());
+            else
+                d = DecorationPerlinNoiseOffPath.GetRandomGameObject(RandomSeed.NextDouble());
 
-        */
+            PerlinNoiseDecoration = Instantiate(d.gameObject, Position + d.GetRandomOffset(), Quaternion.identity, RoomTransform.transform);
+            PerlinScale = PerlinNoiseDecoration.transform.localScale;
+            PerlinScale.z *= Noise * 1.4f;
+            PerlinNoiseDecoration.transform.localScale = PerlinScale;
+        }
+
     }
 
     void SpawnDecorations()
     { 
         Vector3 Position;
         Vector3 ClosestPosition;
+
         for (int y = 0; y < DecorationGrid.Count; y++)
             for (int x = 0; x < DecorationGrid.Count; x++)
             {
                 Position = new Vector3((x * Scale) - DecorationGridWidth, (y * Scale) - DecorationGridHeight);
                 ClosestPosition = RoomTransform.ClosestPoint(Position);
-                if (Vector3.Distance(ClosestPosition, Position) < 5 * Scale)
+                if (Vector3.Distance(ClosestPosition, Position) < 6 * Scale)
                 {
-                    
+                    PlaceNoiseDecorations(x, y, Position);
 
                     if (DecorationGrid[y][x] == 2)
-                        Instantiate(DecorationPiece.GetRandomGameObject(RandomSeed.NextDouble()), Position , Quaternion.identity, RoomTransform.transform);
+                    {
+                        d = DecorationPiece.GetRandomGameObject(RandomSeed.NextDouble());
+                        Instantiate(d.gameObject, Position + d.GetRandomOffset(), Quaternion.identity, RoomTransform.transform);
+                    }
 
                     if (DecorationGrid[y][x] == 3)
-                        Instantiate(DecorationPiece2x2.GetRandomGameObject(RandomSeed.NextDouble()), Position, Quaternion.identity, RoomTransform.transform);
+                    {
+                        d = DecorationPiece2x2.GetRandomGameObject(RandomSeed.NextDouble());
+                        Instantiate(d.gameObject, Position + d.GetRandomOffset(), Quaternion.identity, RoomTransform.transform);
+                    }
 
                     if (DecorationGrid[y][x] == 4)
                         if (ClosestPosition.y > Position.y)
-                            Instantiate(DecorationPiece3x3.GetRandomGameObject(RandomSeed.NextDouble()), Position, Quaternion.identity, RoomTransform.transform);
+                        {
+                            d = DecorationPiece3x3.GetRandomGameObject(RandomSeed.NextDouble());
+                            Instantiate(d.gameObject, Position + d.GetRandomOffset(), Quaternion.identity, RoomTransform.transform);
+                        }
                         else
-                            Instantiate(DecorationPiece3x3Tall.GetRandomGameObject(RandomSeed.NextDouble()), Position, Quaternion.identity, RoomTransform.transform);
+                        {
+                            d = DecorationPiece3x3Tall.GetRandomGameObject(RandomSeed.NextDouble());
+                            Instantiate(d.gameObject, Position + d.GetRandomOffset(), Quaternion.identity, RoomTransform.transform);
+                        }
                 }
                 
             }
