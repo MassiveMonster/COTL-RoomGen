@@ -70,6 +70,13 @@ public class IslandPiece : MonoBehaviour
             sr.enabled = false;
     }
 
+    public void HideSprites()
+    {
+        SpriteRenderer[] spriteRenderer = GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer sr in spriteRenderer)
+            sr.enabled = false;
+    }
+
     [Button("Show Sprites")]
     void ShowSprites()
     {
@@ -85,6 +92,20 @@ public class IslandPiece : MonoBehaviour
         SpriteRenderer[] spriteRenderer = GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer sr in spriteRenderer)
             sr.enabled = true;
+    }
+
+    [Button("Round Colliders")]
+    void RoundColliders()
+    {
+        List<Vector2> Points = new List<Vector2>();
+        int i = -1;
+        while (++i < Collider.points.Length)
+        {
+            float x = Mathf.Round(Collider.points[i].x * 2) / 2;
+            float y = Mathf.Round(Collider.points[i].y * 2) / 2;
+            Points.Add(new Vector2(x, y));
+        }
+        Collider.SetPath(0, Points);
     }
 
 

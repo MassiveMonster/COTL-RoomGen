@@ -95,6 +95,8 @@ public class GenerateRoom : MonoBehaviour
     [Button("GENERATE!", ButtonSizes.Gigantic)]
     void Generate()
     {
+        stopwatch.Restart();
+
         ClearPrefabs();
         Pieces = new List<IslandPiece>();
 
@@ -134,6 +136,9 @@ public class GenerateRoom : MonoBehaviour
             RoomTransform.enabled = false;
             Physics2D.SyncTransforms();
         }
+
+        stopwatch.Stop();
+        UnityEngine.Debug.Log("Time Taken: " + stopwatch.ElapsedMilliseconds + "ms");
     }
 
     void CreatePaths()
@@ -173,7 +178,7 @@ public class GenerateRoom : MonoBehaviour
     void DisableIslands()
     {
         foreach (IslandPiece i in Pieces)
-            i.gameObject.SetActive(false);
+            i.HideSprites();
     }
 
     [Button("Create SpriteShape")]
@@ -184,14 +189,14 @@ public class GenerateRoom : MonoBehaviour
         {
             GameObject g = new GameObject();
             g.transform.position = Vector3.zero;
-            g.transform.parent = transform;
+            g.transform.parent = RoomTransform.transform;
             g.name = "Sprite shape " + i;
 
             SpriteShapeController s = g.AddComponent<SpriteShapeController>();
             s.spriteShape = SpriteShape;
             s.spline.Clear();
             s.splineDetail = 3;
-
+            s.spriteShapeRenderer.sortingLayerName = "Bottom";
             Vector2[] points = new Vector2[RoomTransform.GetPathPointCount(i)];
             RoomTransform.GetPath(i, points);
             int p = 0;
