@@ -9,17 +9,20 @@ public class IslandPiece : MonoBehaviour
    public List<IslandConnector> EastConnectors = new List<IslandConnector>();
    public List<IslandConnector> SouthConnectors = new List<IslandConnector>();
    public List<IslandConnector> WestConnectors = new List<IslandConnector>();
-   public Collider2D Collider;
 
-    private void Start()
-    {
-        Collider = GetComponent<Collider2D>();
-        if (Collider == null)
-            Collider = GetComponentInChildren<Collider2D>();
+    public PolygonCollider2D Collider
+   {
+        get {
+            if (_Collider == null) _Collider = GetComponentInChildren<PolygonCollider2D>();
+            if (_Collider == null) _Collider = GetComponent<PolygonCollider2D>();
+            return _Collider;
+        }  
     }
+   public PolygonCollider2D _Collider;
 
-    [Button("Get Connectors")]
-   void GetConnectors()
+
+    [Button("Get Connectors", ButtonSizes.Gigantic)]
+    void GetConnectors()
     {
         Connectors = GetComponentsInChildren<IslandConnector>();
         NorthConnectors.Clear();
@@ -43,6 +46,46 @@ public class IslandPiece : MonoBehaviour
         }
     }
 
+    GameObject SpriteShapeGO = null;
+    [Button("Set SpriteShape")]
+    public void SetSpriteShape()
+    { 
+        GenerateRoom generateRoom = GameObject.FindObjectOfType<GenerateRoom>();
+        if (SpriteShapeGO == null)
+        {
+            SpriteShapeGO = new GameObject();
+            SpriteShapeGO.transform.parent = transform;
+            SpriteShapeGO.transform.localPosition = Vector3.zero;
+            SpriteShapeGO.name = "Sprite Shape";
+        }
+
+        UnityEngine.U2D.SpriteShapeController s = SpriteShapeGO.AddComponent<UnityEngine.U2D.SpriteShapeController>();
+        s.spriteShape = generateRoom.SpriteShape;
+        s.spline.Clear();
+        int p = -1;
+        while(++p < Collider.points.Length)
+            s.spline.InsertPointAt(p, Collider.points[p]);
+        SpriteRenderer[] spriteRenderer = GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer sr in spriteRenderer)
+            sr.enabled = false;
+    }
+
+    [Button("Show Sprites")]
+    void ShowSprites()
+    {
+        if (SpriteShapeGO != null)
+        {
+            if (Application.isEditor)
+                DestroyImmediate(SpriteShapeGO);
+            else
+                Destroy(SpriteShapeGO);
+        }
+        SpriteShapeGO = null;
+
+        SpriteRenderer[] spriteRenderer = GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer sr in spriteRenderer)
+            sr.enabled = true;
+    }
 
 
     List<IslandConnector> ReturnConnectors;

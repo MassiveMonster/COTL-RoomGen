@@ -8,4 +8,9 @@ public class IslandConnector : MonoBehaviour
     public bool Active = false;
     public Direction MyDirection;
     public enum Direction {North, East, South, West}
+
+    private void OnEnable()
+    {
+        GetComponent<SpriteRenderer>().enabled = false;
+    }
 }
