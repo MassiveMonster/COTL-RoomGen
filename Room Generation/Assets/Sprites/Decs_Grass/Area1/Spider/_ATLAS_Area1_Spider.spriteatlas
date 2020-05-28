@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: _ATLAS_Area1_Spider
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 4096
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: cb6704f8de2624680b6c5d3922ffec16, type: 3}
+    - {fileID: 2800000, guid: 3e112dd81ef774c1d9f0b1ed1a97d879, type: 3}
+    - {fileID: 2800000, guid: 9a1e31a6ab8054424bd087eb97be98e5, type: 3}
+    - {fileID: 2800000, guid: 706088fa0e6a740cc8181a6210c0f4c8, type: 3}
+    - {fileID: 2800000, guid: 31473d24b13fc4774bc1d2449114ed75, type: 3}
+    - {fileID: 2800000, guid: 92462866e77754c2081ee2305a621080, type: 3}
+    - {fileID: 2800000, guid: 3d998bf8ef928ed409b2c45c292eadd0, type: 3}
+    - {fileID: 2800000, guid: 3470a9d3061dce747b09ac8bf3849a14, type: 3}
+    - {fileID: 2800000, guid: 76120f2b56f8a8646976c340653b4ec4, type: 3}
+    - {fileID: 2800000, guid: 6821ff74bd4ba4cba9f59b8fbe71bc0b, type: 3}
+    - {fileID: 2800000, guid: f0f9ff7192bce49f8a0df78dbd48248d, type: 3}
+    - {fileID: 2800000, guid: 11b272004236046a88ed0e4559c58b95, type: 3}
+    - {fileID: 2800000, guid: 2a75a5a9b9a4148bcb20003df1337702, type: 3}
+    - {fileID: 2800000, guid: 9b7326554ee044e218d35d404e6314bb, type: 3}
+    - {fileID: 2800000, guid: cac3a8624470743ffae1b2a8488e2a1f, type: 3}
+    - {fileID: 2800000, guid: 170a70414d86e4fbcbf04e72d29f5e1f, type: 3}
+    - {fileID: 2800000, guid: 5f3248bec6eb442a48f7b49223a6d0db, type: 3}
+    - {fileID: 2800000, guid: 1f5a947467c46e14aa34e71181c217d1, type: 3}
+    - {fileID: 2800000, guid: 702e97e2f7c5a4d3f8ed40b954a41bde, type: 3}
+    - {fileID: 2800000, guid: 9d0636bf52fc38b49be33e640e877138, type: 3}
+    totalSpriteSurfaceArea: 8649228
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 11b272004236046a88ed0e4559c58b95, type: 3}
+  - {fileID: 21300000, guid: 170a70414d86e4fbcbf04e72d29f5e1f, type: 3}
+  - {fileID: 21300000, guid: f0f9ff7192bce49f8a0df78dbd48248d, type: 3}
+  - {fileID: 21300000, guid: cac3a8624470743ffae1b2a8488e2a1f, type: 3}
+  - {fileID: 21300000, guid: 702e97e2f7c5a4d3f8ed40b954a41bde, type: 3}
+  - {fileID: 21300000, guid: 3470a9d3061dce747b09ac8bf3849a14, type: 3}
+  - {fileID: 21300000, guid: 31473d24b13fc4774bc1d2449114ed75, type: 3}
+  - {fileID: -736437738106157647, guid: 1f5a947467c46e14aa34e71181c217d1, type: 3}
+  - {fileID: -1277001243570355845, guid: 1f5a947467c46e14aa34e71181c217d1, type: 3}
+  - {fileID: 1184788367572511199, guid: 1f5a947467c46e14aa34e71181c217d1, type: 3}
+  - {fileID: 21300000, guid: 6821ff74bd4ba4cba9f59b8fbe71bc0b, type: 3}
+  - {fileID: 21300000, guid: 9b7326554ee044e218d35d404e6314bb, type: 3}
+  - {fileID: 21300000, guid: 92462866e77754c2081ee2305a621080, type: 3}
+  - {fileID: 21300000, guid: 9a1e31a6ab8054424bd087eb97be98e5, type: 3}
+  - {fileID: 21300000, guid: 3e112dd81ef774c1d9f0b1ed1a97d879, type: 3}
+  - {fileID: 21300000, guid: cb6704f8de2624680b6c5d3922ffec16, type: 3}
+  - {fileID: 21300000, guid: 3d998bf8ef928ed409b2c45c292eadd0, type: 3}
+  - {fileID: 21300000, guid: 2a75a5a9b9a4148bcb20003df1337702, type: 3}
+  - {fileID: 21300000, guid: 706088fa0e6a740cc8181a6210c0f4c8, type: 3}
+  - {fileID: 21300000, guid: 76120f2b56f8a8646976c340653b4ec4, type: 3}
+  - {fileID: 21300000, guid: 5f3248bec6eb442a48f7b49223a6d0db, type: 3}
+  - {fileID: 21300000, guid: 9d0636bf52fc38b49be33e640e877138, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - SpiderWeb_SemiCircle
+  - TempleWall_Edge2
+  - SpiderWeb_RightAngle_Small
+  - TempleWall_Edge
+  - SpiderEgg_Purp
+  - SpiderEgg_Darkness
+  - PillarRocks
+  - Roots_2
+  - Roots_1
+  - Roots_0
+  - SpiderWeb_RightAngle2
+  - TempleWall2
+  - PillarRocksBack
+  - Pillar1
+  - Arch
+  - Arch_norunes
+  - SpiderEgg_Normal
+  - TempleWall
+  - Pillar2
+  - SpiderWeb_RightAngle
+  - WebRope
+  - SpiderWeb_Ground
+  m_Tag: _ATLAS_Area1_Spider
+  m_IsVariant: 0
